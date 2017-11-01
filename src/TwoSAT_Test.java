@@ -6,38 +6,34 @@ import java.util.LinkedList;
 
 public class TwoSAT_Test {
     public static void main(String[] args) {
-
         boolean correct_format = true;
         int variable = 0;
-        //int variable = 3;
-        //Graph_TwoSat SAT = new Graph_TwoSat();
+
         File file = new File("C:\\Users\\Wei Yang\\Dropbox\\SUTD\\Academic\\Term 4\\2D\\Algo_2D\\src\\testfile.cnf");
         try {
             BufferedReader br = new BufferedReader(new FileReader(file));
+            // Skip First Line due to commenting
+            br.readLine();
+            //Split second line to get no of variables
+            String[] problem_line = br.readLine().split("\\s+");
+            if(problem_line.length!=4){
+                System.out.println("INVALID PROBLEM LINE FORMAT");
+                correct_format = false;
+            }
+            else {
+                variable = Integer.parseInt(problem_line[2]);
+                System.out.println("No of variables: " + variable);
+            }
+            //Get the variable and put into Graph_TwoSat Class
+
+            Graph_TwoSat SAT = new Graph_TwoSat(variable*2);
             String line;
             while ((line = br.readLine()) != null) {
-                if (line.equals("") || line.charAt(0) == 'c' ) {
+                if (line.equals("")){
                     continue;
                 }
-                if (line.charAt(0) == ('p')){
-                    String[] tokens = line.split("\\s+");
-                    if(tokens.length!=4){
-                        System.out.println("INVALID PROBLEM LINE FORMAT");
-                        correct_format = false;
-                        break;
-                    }
-                    else {
-                        variable = Integer.parseInt(tokens[2]);
-                        //String variables = tokens[2];
-                        System.out.println("No of variables: " + variable);
-                        System.out.println("");
-                        continue;
-                    }
-                }
-                //Making graph vector
-                Graph_TwoSat SAT = new Graph_TwoSat(variable*2);
                 String[] tokens = line.split("\\s+");
-                //Checking if the line having 3 items
+
                 if ((tokens.length==3)){
                     //Check for 0 at the 3rd number of the line
                     if (tokens[2].equals("0")){
@@ -51,24 +47,24 @@ public class TwoSAT_Test {
                     }
                     else{
                         //Invalid, without zero
-                        System.out.println("WRONG FORMAT");
+
+                        System.out.println("WRONG FORMAT1");
                         correct_format = false;
                         break;
                     }
                 }
                 //Violate 3 items rule
                 else{
-                    System.out.println("WRONG FORMAT");
+                    System.out.println(tokens[0]);
+                    System.out.println("WRONG FORMAT2");
                     correct_format = false;
                     break;
-
                 }
             }
-            //Unable to get SCC
             if (correct_format == true){
-                System.out.println("DONE");
                 //It says SAT not declard
                 LinkedList<LinkedList<Integer>> solutions = SAT.getSCCs();
+                System.out.println("CONNECTED NODES:");
                 System.out.println(solutions);
                 // check if satisfiable
                 boolean satisfiable = false;
@@ -99,6 +95,7 @@ public class TwoSAT_Test {
             else{
                 System.out.println("PLEASE RECTIFY");
             }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
