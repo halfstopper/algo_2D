@@ -2,12 +2,15 @@
 import java.util.*;
 import java.util.LinkedList;
 
-class Graph_TwoSat
+public class Graph_TwoSat
 {
     private int V;   // No. of vertices
     private LinkedList<Integer> adj[]; //Adjacency List
     private int K;
     //Constructor for Graph_TwoSat
+
+
+
     Graph_TwoSat(int v)
     {
         V = v;
@@ -154,10 +157,17 @@ class Graph_TwoSat
         // Create a graph given in the above diagram
         int variable = 3;
         Graph_TwoSat g = new Graph_TwoSat(variable*2); // Times 2 for vertices
+/*
         g.OR(1,2);
         g.OR(-2,-3);
         g.OR(-1,3);
         g.OR(3,-2);
+*/
+        g.OR(-1,2);
+        g.OR(-2,3);
+        g.OR(1,-3);
+        g.OR(3,2);
+
 
 
 
@@ -182,10 +192,10 @@ class Graph_TwoSat
             solutionString += "\n";
         }
         if (satisfiable) {
-            System.out.println("Satisfiable");
+            System.out.println("FORMULA SATISFIABLE");
             System.out.println(solutionString);
         } else {
-            System.out.println("Not satisfiable");
+            System.out.println("FORMULA UNSATISFIABLE");
         }
     }
 }
