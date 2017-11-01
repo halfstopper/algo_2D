@@ -109,7 +109,7 @@ class Graph_TwoSat
     }
     // The main function that finds and prints all strongly
     // connected components
-    LinkedList<LinkedList<Integer>> printSCCs()
+    LinkedList<LinkedList<Integer>> getSCCs()
     {
         Stack stack = new Stack();
         // Mark all the vertices as not visited (For first DFS)
@@ -160,17 +160,32 @@ class Graph_TwoSat
         g.OR(3,-2);
 
 
-        LinkedList<LinkedList<Integer>> solutions = g.printSCCs();
+
+        LinkedList<LinkedList<Integer>> solutions = g.getSCCs();
+        System.out.println(solutions);
         // check if satisfiable
+        boolean satisfiable = false;
+        String solutionString = "";
         for (LinkedList<Integer> solution: solutions) {
+            if (solution.size() == variable) {
+                satisfiable = true;
+            } else {
+                continue; // this is actually important
+            }
             boolean[] sol = new boolean[variable];
             for (Integer var : solution) {
                 sol[Math.abs(var) - 1] = var > 0;
             }
             for (int i =0; i < sol.length; i++) {
-                System.out.print((sol[i] ? 1 : 0) + " ");
+                solutionString += (sol[i] ? 1 : 0) + " ";
             }
-            System.out.println("");
+            solutionString += "\n";
+        }
+        if (satisfiable) {
+            System.out.println("Satisfiable");
+            System.out.println(solutionString);
+        } else {
+            System.out.println("Not satisfiable");
         }
     }
 }
