@@ -6,8 +6,11 @@ import java.util.LinkedList;
 
 public class TwoSAT_Test {
     public static void main(String[] args) {
+
         boolean correct_format = true;
         int variable = 0;
+        //int variable = 3;
+        //Graph_TwoSat SAT = new Graph_TwoSat();
         File file = new File("C:\\Users\\Wei Yang\\Dropbox\\SUTD\\Academic\\Term 4\\2D\\Algo_2D\\src\\testfile.cnf");
         try {
             BufferedReader br = new BufferedReader(new FileReader(file));
@@ -31,6 +34,7 @@ public class TwoSAT_Test {
                         continue;
                     }
                 }
+                //Making graph vector
                 Graph_TwoSat SAT = new Graph_TwoSat(variable*2);
                 String[] tokens = line.split("\\s+");
                 //Checking if the line having 3 items
@@ -40,9 +44,9 @@ public class TwoSAT_Test {
                         //Valid Line
                         int v = Integer.parseInt(tokens[0]);
                         int w = Integer.parseInt(tokens[1]);
-                        System.out.println("V "+v );
-                        System.out.println("W "+w );
-                        System.out.println("");
+                        //System.out.println("V "+v );
+                        //System.out.println("W "+w );
+                        //System.out.println("");
                         SAT.OR(v,w);
                     }
                     else{
@@ -59,12 +63,37 @@ public class TwoSAT_Test {
                     break;
 
                 }
-
             }
             //Unable to get SCC
-            LinkedList<LinkedList<Integer>> solutions = SAT.getSCCs();
             if (correct_format == true){
                 System.out.println("DONE");
+                //It says SAT not declard
+                LinkedList<LinkedList<Integer>> solutions = SAT.getSCCs();
+                System.out.println(solutions);
+                // check if satisfiable
+                boolean satisfiable = false;
+                String solutionString = "";
+                for (LinkedList<Integer> solution: solutions) {
+                    if (solution.size() == variable) {
+                        satisfiable = true;
+                    } else {
+                        continue; // this is actually important
+                    }
+                    boolean[] sol = new boolean[variable];
+                    for (Integer var : solution) {
+                        sol[Math.abs(var) - 1] = var > 0;
+                    }
+                    for (int i =0; i < sol.length; i++) {
+                        solutionString += (sol[i] ? 1 : 0) + " ";
+                    }
+                    solutionString += "\n";
+                }
+                if (satisfiable) {
+                    System.out.println("FORMULA SATISFIABLE");
+                    System.out.println(solutionString);
+                } else {
+                    System.out.println("FORMULA UNSATISFIABLE");
+                }
 
             }
             else{

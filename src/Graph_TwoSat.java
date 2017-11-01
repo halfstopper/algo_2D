@@ -9,11 +9,24 @@ public class Graph_TwoSat
     private int K;
     //Constructor for Graph_TwoSat
 
+    Graph_TwoSat(){
+        System.out.println("Initialize");
+    }
 
 
     Graph_TwoSat(int v)
     {
         V = v;
+        Making(v);
+    }
+
+    void getVertices(int v){
+        V = v;
+        Making(v);
+
+    }
+
+    void Making(int v){
         adj = new LinkedList[v];
         for (int i=0; i<v; ++i)
             adj[i] = new LinkedList();
