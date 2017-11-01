@@ -51,7 +51,7 @@ class Graph_TwoSat
         adj[v].add(w);
     }
     // A recursive function to print DFS starting from v
-    void DFSUtil(int v,boolean visited[])
+    void DFSUtil(int v,boolean visited[], LinkedList<Integer> solution)
     {
         // Mark the current node as visited and print it
         visited[v] = true;
@@ -65,7 +65,7 @@ class Graph_TwoSat
         }
         //System.out.print(v + " ");
         //Print one vertice solution
-        System.out.print(K + " ");
+        solution.add(K);
 
         int n;
         // Recur for all the vertices adjacent to this vertex
@@ -74,7 +74,7 @@ class Graph_TwoSat
         {
             n = i.next();
             if (!visited[n])
-                DFSUtil(n,visited);
+                DFSUtil(n,visited, solution);
         }
 
     }
@@ -109,7 +109,7 @@ class Graph_TwoSat
     }
     // The main function that finds and prints all strongly
     // connected components
-    void printSCCs()
+    LinkedList<LinkedList<Integer>> printSCCs()
     {
         Stack stack = new Stack();
         // Mark all the vertices as not visited (For first DFS)
@@ -126,7 +126,10 @@ class Graph_TwoSat
         // Mark all the vertices as not visited (For second DFS)
         for (int i = 0; i < V; i++)
             visited[i] = false;
+
         // Now process all vertices in order defined by Stack
+
+        LinkedList<LinkedList<Integer>> solutions = new LinkedList<>();
         while (stack.empty() == false)
         {
             // Pop a vertex from stack
@@ -135,11 +138,15 @@ class Graph_TwoSat
             // Print Strongly connected component of the popped vertex
             if (visited[v] == false)
             {
-                gr.DFSUtil(v, visited);
+                LinkedList<Integer> solution = new LinkedList<>();
+                gr.DFSUtil(v, visited, solution);
+                solutions.add(solution);
                 //The separation
-                System.out.println("");
+
             }
         }
+
+        return solutions;
     }
     // Main Method
     public static void main(String args[])
@@ -153,6 +160,17 @@ class Graph_TwoSat
         g.OR(3,-2);
 
 
-        g.printSCCs();
+        LinkedList<LinkedList<Integer>> solutions = g.printSCCs();
+        // check if satisfiable
+        for (LinkedList<Integer> solution: solutions) {
+            boolean[] sol = new boolean[variable];
+            for (Integer var : solution) {
+                sol[Math.abs(var) - 1] = var > 0;
+            }
+            for (int i =0; i < sol.length; i++) {
+                System.out.print((sol[i] ? 1 : 0) + " ");
+            }
+            System.out.println("");
+        }
     }
 }
