@@ -1,4 +1,3 @@
-//  Using Kosaraju algorithm
 import java.util.*;
 import java.util.LinkedList;
 
@@ -8,11 +7,6 @@ public class Graph_TwoSat
     private LinkedList<Integer> adj[]; //Adjacency List
     private int K;
     //Constructor for Graph_TwoSat
-
-    Graph_TwoSat(){
-        System.out.println("Initialize");
-    }
-
 
     Graph_TwoSat(int v)
     {
@@ -25,20 +19,21 @@ public class Graph_TwoSat
     //Converting OR statement into Edges
     void OR(int v, int w){
         if ((v>0)&&(w>0)){
-            addEdge(-v,w);
-            addEdge(-w,v);
+            addEdge(-1*v,w);
+            addEdge(-1*w,v);
         }
         if ((v<0)&&(w>0)){
-            addEdge(-v,w);
-            addEdge(-w,v);
+            addEdge(-1*v,w);
+            addEdge(-1*w,v);
         }
         if ((v>0)&&(w<0)){
-            addEdge(-v,w);
-            addEdge(-w,v);
+            addEdge(-1*v,w);
+            addEdge(-1*w,v);
         }
         if ((v<0)&&(w<0)){
-            addEdge(-v,w);
-            addEdge(-w,v);
+
+            addEdge(-1*v,w);
+            addEdge(-1*w,v);
         }
     }
     //Function to add an edge into the graph
@@ -62,15 +57,15 @@ public class Graph_TwoSat
     {
         // Mark the current node as visited and print it
         visited[v] = true;
-        // Convert Back to Negative vertice solution
+        // Convert Back to Negative vertices solution
         if (v >= (V/2)){
             K = (v+1-(V/2))*-1;
         }
-        // Add +1 Each positive vertice solution
+        // Add +1 Each positive vertices solution
         else{
             K = v + 1;
         }
-        //System.out.print(v + " ");
+        //System.out.print(K + " ");
         //Print one vertice solution
         solution.add(K);
 
@@ -91,7 +86,7 @@ public class Graph_TwoSat
         Graph_TwoSat g = new Graph_TwoSat(V);
         for (int v = 0; v < V; v++)
         {
-            // Recur for all the vertices adjacent to this vertex
+            // Recursive for all the vertices adjacent to this vertex
             Iterator<Integer> i =adj[v].listIterator();
             while(i.hasNext())
                 g.adj[i.next()].add(v);
@@ -124,82 +119,31 @@ public class Graph_TwoSat
         for(int i = 0; i < V; i++)
             visited[i] = false;
         // Fill vertices in stack according to their finishing
-        // timesss
+        // times
         for (int i = 0; i < V; i++)
             if (visited[i] == false)
                 fillOrder(i, visited, stack);
         // Create a reversed graph
-        Graph_TwoSat gr = getTranspose();
+        Graph_TwoSat graph_1 = getTranspose();
         // Mark all the vertices as not visited (For second DFS)
         for (int i = 0; i < V; i++)
             visited[i] = false;
-
         // Now process all vertices in order defined by Stack
-
         LinkedList<LinkedList<Integer>> solutions = new LinkedList<>();
         while (stack.empty() == false)
         {
             // Pop a vertex from stack
             int v = (int)stack.pop();
-
             // Print Strongly connected component of the popped vertex
             if (visited[v] == false)
             {
                 LinkedList<Integer> solution = new LinkedList<>();
-                gr.DFSUtil(v, visited, solution);
+                graph_1.DFSUtil(v, visited, solution);
+                //System.out.println(" ");
                 solutions.add(solution);
                 //The separation
-
             }
         }
-
         return solutions;
-    }
-    // Main Method
-    public static void main(String args[])
-    {
-        // Create a graph given in the above diagram
-        int variable = 3;
-        Graph_TwoSat g = new Graph_TwoSat(variable*2); // Times 2 for vertices
-/*
-        g.OR(1,2);
-        g.OR(-2,-3);
-        g.OR(-1,3);
-        g.OR(3,-2);
-*/
-        g.OR(-1,2);
-        g.OR(-2,3);
-        g.OR(1,-3);
-        g.OR(3,2);
-
-
-
-
-        LinkedList<LinkedList<Integer>> solutions = g.getSCCs();
-        System.out.println(solutions);
-        // check if satisfiable
-        boolean satisfiable = false;
-        String solutionString = "";
-        for (LinkedList<Integer> solution: solutions) {
-            if (solution.size() == variable) {
-                satisfiable = true;
-            } else {
-                continue; // this is actually important
-            }
-            boolean[] sol = new boolean[variable];
-            for (Integer var : solution) {
-                sol[Math.abs(var) - 1] = var > 0;
-            }
-            for (int i =0; i < sol.length; i++) {
-                solutionString += (sol[i] ? 1 : 0) + " ";
-            }
-            solutionString += "\n";
-        }
-        if (satisfiable) {
-            System.out.println("FORMULA SATISFIABLE");
-            System.out.println(solutionString);
-        } else {
-            System.out.println("FORMULA UNSATISFIABLE");
-        }
     }
 }

@@ -3,13 +3,18 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.LinkedList;
+import java.util.Scanner;
 
-public class TwoSAT_Test {
+public class Execution {
     public static void main(String[] args) {
         boolean correct_format = true;
         int variable = 0;
+        System.out.println("Please input the CNF file path");
+        Scanner scan = new Scanner(System.in);
+        String cnf_path = scan.nextLine();
 
-        File file = new File("C:\\Users\\Wei Yang\\Dropbox\\SUTD\\Academic\\Term 4\\2D\\Algo_2D\\src\\testfile.cnf");
+        File file = new File(cnf_path);
+        //File file = new File("C:\\Users\\Wei Yang\\Dropbox\\SUTD\\Academic\\Term 4\\2D\\Algo_2D\\src\\testfile.cnf");
         try {
             BufferedReader br = new BufferedReader(new FileReader(file));
             // Skip First Line due to commenting
@@ -17,6 +22,7 @@ public class TwoSAT_Test {
             //Split second line to get no of variables
             String[] problem_line = br.readLine().split("\\s+");
             if(problem_line.length!=4){
+                System.out.println("INVALID INPUT");
                 System.out.println("INVALID PROBLEM LINE FORMAT");
                 correct_format = false;
             }
@@ -47,8 +53,7 @@ public class TwoSAT_Test {
                     }
                     else{
                         //Invalid, without zero
-
-                        System.out.println("WRONG FORMAT1");
+                        System.out.println("INVALID INPUT");
                         correct_format = false;
                         break;
                     }
@@ -56,7 +61,7 @@ public class TwoSAT_Test {
                 //Violate 3 items rule
                 else{
                     System.out.println(tokens[0]);
-                    System.out.println("WRONG FORMAT2");
+                    System.out.println("INVALID INPUT");
                     correct_format = false;
                     break;
                 }
@@ -93,11 +98,12 @@ public class TwoSAT_Test {
 
             }
             else{
-                System.out.println("PLEASE RECTIFY");
+                System.out.println("PLEASE RECTIFY CNF FILE");
             }
 
         } catch (IOException e) {
             e.printStackTrace();
+            System.out.println("Invalid File Path");
         }
     }
 }
