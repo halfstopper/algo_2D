@@ -3,11 +3,10 @@ import java.util.LinkedList;
 
 public class Graph_TwoSat
 {
-    private int V;   // No. of vertices
+    private int V;   // No. of vertices (2X of variables)
     private LinkedList<Integer> adj[]; //Adjacency List
     private int K;
     //Constructor for Graph_TwoSat
-
     Graph_TwoSat(int v)
     {
         V = v;
@@ -78,7 +77,6 @@ public class Graph_TwoSat
             if (!visited[n])
                 DFSUtil(n,visited, solution);
         }
-
     }
     // Function that returns reverse (or transpose) of this graph
     Graph_TwoSat getTranspose()

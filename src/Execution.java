@@ -5,14 +5,17 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Scanner;
 
+/*
+Reading .cnf file, throw to Graph_TwoSat to do create implication graph and analyze the
+Strongly Connected Graph, and return the result.
+*/
 public class Execution {
     public static void main(String[] args) {
         boolean correct_format = true;
         int variable = 0;
-        System.out.println("Please input the CNF file path");
+        System.out.println("Please input the .cnf path");
         Scanner scan = new Scanner(System.in);
         String cnf_path = scan.nextLine();
-
         File file = new File(cnf_path);
         //File file = new File("C:\\Users\\Wei Yang\\Dropbox\\SUTD\\Academic\\Term 4\\2D\\Algo_2D\\src\\testfile.cnf");
         try {
@@ -46,9 +49,6 @@ public class Execution {
                         //Valid Line
                         int v = Integer.parseInt(tokens[0]);
                         int w = Integer.parseInt(tokens[1]);
-                        //System.out.println("V "+v );
-                        //System.out.println("W "+w );
-                        //System.out.println("");
                         SAT.OR(v,w);
                     }
                     else{
@@ -67,7 +67,6 @@ public class Execution {
                 }
             }
             if (correct_format == true){
-                //It says SAT not declard
                 LinkedList<LinkedList<Integer>> solutions = SAT.getSCCs();
                 System.out.println("CONNECTED NODES:");
                 System.out.println(solutions);
@@ -100,7 +99,6 @@ public class Execution {
             else{
                 System.out.println("PLEASE RECTIFY CNF FILE");
             }
-
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Invalid File Path");
